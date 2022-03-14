@@ -17,8 +17,6 @@ Start-Service WMSVC
 ```PowerShell
 Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WebManagement\Server -Name RequiresWindowsCredentials -Value 1 -Type DWORD -Force
 Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WebManagement\Server -Name EnableRemoteManagement -Value 1 -Force
-REG add HKLM\Software\Microsoft\WebManagement\Server /v EnableRemoteManagement /t REG_DWORD /d 1 /f
-Restart-Computer -Force
 ```
 ### Optional: Port für Remotemanagement ändern
 > **Port 8172** is the default port for web management. By default, WMSVC is bound to all unassigned IP addresses on port 8172 using a self-signed certificate (WMSVC only communicates over HTTPS).
@@ -26,10 +24,11 @@ Restart-Computer -Force
 REG add HKLM\Software\Microsoft\WebManagement\Server /v Port /t REG_DWORD /d 8888 /f
 ```
 > Ändert den Port für das Remotemanagement von 8172 auf 8888 ab.
-### Firewall-Regeln für Remote-Management aktivieren
+### Firewall-Regeln für Remote-Management am Server aktivieren
 ```PowerShell
 Get-NetFirewallRule | ? Displaygroup -eq Windows-Remoteverwaltung | Enable-NetFirewallRule
 netsh advfirewall firewall add rule name="IIS Remote Verwaltung" dir=in action=allow service=WMSVC
+Restart-Computer -Force
 ```
 ## Security
 > https://blog.stueber.de/posts/tls-unter-iis-10-absichern/
