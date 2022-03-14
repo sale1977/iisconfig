@@ -122,10 +122,15 @@ Import-Certificate -CertStoreLocation Cert:\LocalMachine\AuthRoot -FilePath C:\A
 ```PowerShell
 Enter-PSSession -Computer <Server-Name> -Credential <Administrator>
 Import-Module WebAdministration
-Get-Website -Name 'Default Web Site' | Stop-WebSite
-New-WebSite -Name 'Testinstance' -Port 80 -HostHeader www.test.lab -IPAddress "*" -PhysicalPath "C:\inetpub/wwwroot/testlab"
-New-WebBinding -Name 'Testinstance' -Port 80 -HostHeader test.lab -IPAddress "*"
-Get-Website -Name 'Testinstance' | Start-WebSite
+New-WebBinding -Name "Default Web Site" -Protocol https -port 443 -IPAddress "*"
+$cert = Get-ChildItem -Path Cert:\LocalMachine\My | where-Object {$_.subject -match "test.lab" | Select -First 1 }
+(Get-WebBinding -Name "Default Web Site" -Port 443 -Protocol "https").AddSslCertificate($cert.Thumbprint, "my")
+# $cert = (gci Cert:\LocalMachine\My | where {$_.Subject -match "test.lab"} | Select -First 1).Thumbprint
+# New-Item -Path "IIS:\SslBindings\0.0.0.0!443" -Value $cert
+# Get-Website -Name 'Default Web Site' | Stop-WebSite
+# New-WebSite -Name 'Testinstance' -Port 80 -HostHeader www.test.lab -IPAddress "*" -PhysicalPath "C:\inetpub/wwwroot/testlab"
+# New-WebBinding -Name 'Testinstance' -Port 80 -HostHeader test.lab -IPAddress "*"
+# Get-Website -Name 'Testinstance' | Start-WebSite
 Exit
 ```
 ## IIS Remoteverwaltung mit Windows Client
