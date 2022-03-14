@@ -2,6 +2,7 @@
 > https://docs.microsoft.com/en-us/iis/manage/remote-administration/remote-administration-for-iis-manager
 
 ## Server Core - PowerShell
+`PowerShell`
 ```PowerShell
 Install-WindowsFeature -Name Web-Mgmt-Service -IncludeAllSubFeature
 Install-WindowsFeature -Name Web-Server
@@ -14,6 +15,7 @@ Set-Service WMSVC -StartupType Automatic
 Start-Service WMSVC
 ```
 ###  Remote Management aktivieren
+`PowerShell`
 ```PowerShell
 Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WebManagement\Server -Name RequiresWindowsCredentials -Value 1 -Type DWORD -Force
 Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WebManagement\Server -Name EnableRemoteManagement -Value 1 -Force
@@ -34,6 +36,7 @@ Restart-Computer -Force
 > https://blog.stueber.de/posts/tls-unter-iis-10-absichern/
 
 ### TLS 1.0 und 1.1 deaktivieren in der Kommandozeile
+`Kommandozeile`
 ```cmd 
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client" /v "Enabled" /t REG_DWORD /d 0 /f > nul 2>&1
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client" /v "Enabled" /t REG_DWORD /d 0 /f > nul 2>&1
@@ -44,6 +47,7 @@ reg add HKLM\SOFTWARE\Microsoft\.NETFramework\v4.0.30319 /V SchUseStrongCrypto /
 reg add HKLM\SOFTWARE\Microsoft\.NETFramework\v4.0.30319 /V SchUseStrongCrypto /T REG_DWORD /D 1 /reg:64 /f >NUL 2>&1
 ```
 ### Schwache kryptographische Verfahren am IIS-Webserver deaktivieren
+`PowerShell`
 ```PowerShell
 Get-TlsCipherSuite | Format-Table Name 
 Disable-TlsCipherSuite -Name "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384"
@@ -114,6 +118,7 @@ Import-Certificate -CertStoreLocation Cert:\LocalMachine\AuthRoot -FilePath C:\A
 ``` 
 
 ## Beispiel Webseite erstellen in PowerShell
+`PowerShell`
 ```PowerShell
 Enter-PSSession -Computer <Server-Name> -Credential <Administrator>
 Import-Module WebAdministration
@@ -124,10 +129,12 @@ Get-Website -Name 'Testinstance' | Start-WebSite
 Exit
 ```
 ## IIS Remoteverwaltung mit Windows Client
+`PowerShell`
 ```PowerShell
 Enable-WindowsOptionalFeature -Online -FeatureName "IIS-WebServerManagementTools" -All
 ```
 ### Installation IIS Manager for Remote Administration 1.2 am Client
+`Kommandozeile`
 ```
 curl -4 -L https://download.microsoft.com/download/2/4/3/24374C5F-95A3-41D5-B1DF-34D98FF610A3/Inetmgr1.2/inetmgr_amd64_de-DE.msi -o C:\Assets\IIS\inetmgr_amd64_de-DE.msi --create-dirs
 msiexec -i C:\Assets\IIS\inetmgr_amd64_de-DE.msi /qb /norestart
@@ -144,6 +151,7 @@ https://www.microsoft.com/web/downloads/platform.aspx
 
 # HTTP auf HTTPS umleiten via Regeldatei
 ## Installation Module ReWrite am Server
+`Kommandozeile`
 ```
 curl -4 -L https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_de-DE.msi -o C:\Assets\IIS\rewrite_amd64_de-DE.msi --create-dirs
 msiexec -i C:\Assets\IIS\rewrite_amd64_de-DE.msi /qb /norestart
@@ -169,7 +177,8 @@ https://techexpert.tips/iis/redirect-http-to-https-iis/
    </system.webServer>
 </configuration>
 ```
-### Befehlszeile zum Herunterladen der Rewrite-Konfiguration am Server
+## Befehlszeile zum Herunterladen der Rewrite-Konfiguration am Server
+`Kommandozeile`
 ```cmd
 curl -4 -L https://raw.githubusercontent.com/sale1977/iisconfig/main/web.config -o C:\inetpub/wwwroot/web.config --create-dirs
 ```
