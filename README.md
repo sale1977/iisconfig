@@ -107,12 +107,29 @@ Import-Certificate -CertStoreLocation Cert:\LocalMachine\AuthRoot -FilePath C:\A
             h1 {color: grey; font-family: Georgia, serif; font-size: 46px;}
             p {font-family: "Lucida Console", "Courier New", monospace;}
             a:link { color:#0000FF; }
+            .center {
+              margin: auto;
+              width: 50%;
+              border: 0px solid #73AD21;
+              padding: 15px; }
+            .center p {
+              margin: 0;
+              position: absolute;
+              top: 60%;
+              left: 50%;
+              -ms-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%);
+            }
         </style>
     </head>
     <body>
         <h1><b>Success!</b> The Test virtual host is working.</h1>
         <hr>
-        <p><a href="https://www.w3schools.com">Tutorials für WWW unter W3Schools.com</a></p>
+        <p><a href="https://www.hak-imst.ac.at">Example of a Website</a></p>
+        <div class="center">
+          <p><iframe width="600" height="450" src="https://www.youtube.com/embed/GC5E8ie2pdM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+        </div>
+
     </body>
 </html>
 ``` 
@@ -188,3 +205,13 @@ https://techexpert.tips/iis/redirect-http-to-https-iis/
 curl -4 -L https://raw.githubusercontent.com/sale1977/iisconfig/main/web.config -o C:\inetpub/wwwroot/web.config --create-dirs
 ```
 > Hinweis: Unter Sites -> Default Web Site - SSL Einstellungen die Einstellung *SSL erforderlich* **deaktiviert** lassen.
+
+# Datei hosts auf Client editieren und Website starten
+`PowerShell`
+```PowerShell
+$hostsPath = "C:\Windows\System32\drivers\etc\hosts"
+Add-Content -Path $env:windir\System32\drivers\etc\hosts -Value "`n10.77.0.1`t`tintranet.test.lab" -Force
+```
+```PowerShell
+Start-Process microsoft-edge:https://intranet.test.lab
+```
