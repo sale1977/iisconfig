@@ -61,16 +61,28 @@ Disable-TlsCipherSuite -Name "TLS_RSA_WITH_3DES_EDE_CBC_SHA"
 ```
 # Root-CA-Zertifikatskette in XCA erstellen, exportieren als PKCS#12 Zertifikatskette (*.pfx) und am Webserver sowie an den Endgeräten importieren
 ## Server
+### Variante Testzertifikat öffentlicher und privater Schlüssel am Server importieren
+
+`1) Kommandozeile`
+```cmd
+curl -4 -L https://github.com/sale1977/iisconfig/raw/main/intranet.test.lab.pfx -o C:\Assets\IIS\intranet.test.lab.pfx --create-dirs
+```
+`2) PowerShell`
 ```PowerShell
 $pwd = ConvertTo-SecureString -String "demo" -AsPlainText -Force
-$Certificate = "Examplefile_CertChain.pfx"
+$Certificate = "C:\Assets\IIS\intranet.test.lab.pfx"
 Import-PfxCertificate -Password $pwd -FilePath $Certificate -CertStoreLocation Cert:\LocalMachine\My -Exportable # optional if i want the private key to be exportable
 ```
-
 ## Client
 Importieren Sie das Zertifikat der Vertrauenswürdigen Stammzertifizierungsstelle (Root CA) mit folgenden Syntax. Beachten Sie, dass Sie den Dateinamen je nach Konfiguration verändern müssen:
+
+`1) Kommandozeile`
+```cmd
+curl -4 -L https://raw.githubusercontent.com/sale1977/iisconfig/main/Scharmer_Root_CA.crt -o C:\Assets\IIS\Scharmer_Root_CA.crt --create-dirs
+```
+`2) PowerShell`
 ```PowerShell
-Import-Certificate -CertStoreLocation Cert:\LocalMachine\AuthRoot -FilePath $env:USERPROFILE\Desktop\PublicCert.cer -Confirm:0
+Import-Certificate -CertStoreLocation Cert:\LocalMachine\AuthRoot -FilePath C:\Assets\IIS\Scharmer_Root_CA.crt -Confirm:0
 ```
 
 ## HTML-Beispiel
