@@ -135,7 +135,6 @@ https://www.microsoft.com/web/downloads/platform.aspx
 ## Installation Module ReWrite am Server
 ```
 curl -4 -L https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_de-DE.msi -o C:\Assets\IIS\rewrite_amd64_de-DE.msi --create-dirs
-+
 msiexec -i C:\Assets\IIS\rewrite_amd64_de-DE.msi /qb /norestart
 ```
 > https://www.iis.net/downloads/microsoft/url-rewrite#additionalDownloads
